@@ -1,0 +1,15 @@
+{
+    "name": "jeffersonsalvador/cnpj-full",
+    "description": "Script PHP para ler os dados públicos do CNPJ disponibilizados pela Receita Federal e convertê-los em arquivos CSV.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jefferson Salvador",
+            "email": "jeffersonsalvador@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"App\\": "app/"}
+    },
+    "require": {}
+}
