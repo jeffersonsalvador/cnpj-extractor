@@ -1,4 +1,6 @@
 vendor/
 _draft/
-zip/*.zip
-csv/*.csv
+zip/*
+csv/*
+!zip/.gitkeep
+!csv/.gitkeep
