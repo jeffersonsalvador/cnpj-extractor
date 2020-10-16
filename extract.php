@@ -21,7 +21,7 @@ class CNPJFull
     {
         $this->findZipFiles();
         $this->readZipFiles();
-        $this->saveCSV();
+//        $this->saveCSV();
     }
 
     private function findZipFiles()
@@ -55,6 +55,7 @@ class CNPJFull
             $zipAndFileName = "zip://zip/{$zipFile['zip']}#{$zipFile['file']}";
             $this->message("Lendo arquivo: {$zipFile['zip']}");
             $this->readFileChunked($zipAndFileName, true, $zipFile['size']);
+            $this->saveCSV();
         }
     }
 
@@ -73,7 +74,7 @@ class CNPJFull
             if ($retbytes) {
                 $cnt += strlen($buffer);
             }
-            echo ' -> ' . round((($i * self::CHUNK_SIZE) / $filesize) * 100, 2) . "%\r";
+            echo ' -> ' . round((($i * self::CHUNK_SIZE) / $filesize) * 100) . "%\r";
             $i++;
         }
         echo "\n";
@@ -87,26 +88,27 @@ class CNPJFull
     private function saveCSV()
     {
         foreach ($this->data as $type => $data) {
-            echo "\n -> SALVANDO CSV ($type)\n";
+            echo " -> SALVANDO CSV ($type)\n";
             $csvFile = "csv/{$type}.csv";
-            $fp = fopen($csvFile, 'w');
+            $fp = fopen($csvFile, 'a');
             foreach ($data as $index => $fields) {
-                echo ' -> ' . round(($index / count($data)) * 100, 2) . "%\r";
+                echo ' -> ' . round(($index / count($data)) * 100) . "%\r";
                 fputcsv($fp, $fields);
             }
             echo "\n";
             fclose($fp);
-            $zip = new ZipArchive();
-            if ($zip->open("csv{$type}.zip", ZipArchive::CREATE) === TRUE)
-            {
-                echo "-> COMPACTANDO CSV ($type)\n";
-                $zip->addFile($csvFile);
-                $zip->close();
-                if (file_exists("{$type}.zip")) {
-                    unlink($csvFile);
-                }
-            }
+//            $zip = new ZipArchive();
+//            if ($zip->open("csv{$type}.zip", ZipArchive::CREATE) === TRUE)
+//            {
+//                echo "-> COMPACTANDO CSV ($type)\n";
+//                $zip->addFile($csvFile);
+//                $zip->close();
+//                if (file_exists("{$type}.zip")) {
+//                    unlink($csvFile);
+//                }
+//            }
         }
+        unset($this->data);
     }
 
     public function strToArray($record) {
@@ -127,7 +129,7 @@ class CNPJFull
         $size = strlen($message);
         echo "\n";
         echo "{$message} \n";
-        echo '|' . str_pad('', $size, '=', STR_PAD_LEFT) . "=|\n";
+        echo str_pad('', $size, '=', STR_PAD_LEFT) . "\n";
     }
 
 }
