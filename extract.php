@@ -24,7 +24,7 @@ class CNPJFull
     {
         $this->findZipFiles();
         $this->readZipFiles();
-//        $this->compactFiles();
+        $this->compactFiles();
     }
 
     private function findZipFiles()
