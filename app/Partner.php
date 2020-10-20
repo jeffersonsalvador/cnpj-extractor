@@ -4,6 +4,8 @@ namespace App;
 
 class Partner
 {
+    use Header;
+
     const CNPJ = 'cnpj';
     const TIPO_SOCIO = 'tipo_socio';
     const NOME_SOCIO = 'nome_socio';

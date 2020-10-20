@@ -4,6 +4,8 @@ namespace App;
 
 class Company
 {
+    use Header;
+
     const CNPJ = 'cnpj';
     const MATRIZ_FILIAL = 'matriz_filial';
     const RAZAO_SOCIAL = 'razao_social';

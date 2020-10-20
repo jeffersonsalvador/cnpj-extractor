@@ -14,6 +14,9 @@ class CNPJFull
 
     function __construct()
     {
+        $this->data['empresas'][0] = Company::getHeader();
+        $this->data['socios'][0] = Partner::getHeader();
+        $this->data['cnae-secundarios'][0] = Cnae::getHeader();
         $this->start();
     }
 
@@ -21,7 +24,7 @@ class CNPJFull
     {
         $this->findZipFiles();
         $this->readZipFiles();
-        $this->compactFiles();
+//        $this->compactFiles();
     }
 
     private function findZipFiles()
@@ -134,10 +137,8 @@ class CNPJFull
 
     public function message($message)
     {
-        $size = strlen($message);
         echo "\n";
         echo "{$message} \n";
-//        echo str_pad('', $size, '-', STR_PAD_LEFT) . "\n";
     }
 
     public function loading($partial, $total)

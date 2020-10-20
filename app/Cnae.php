@@ -1,9 +1,12 @@
 <?php
 namespace App;
 
+use App\Header;
 
 class Cnae
 {
+    use Header;
+
     const CNPJ = 'cnpj';
     const CNAE = 'cnae';
 
