@@ -88,7 +88,7 @@ class CNPJFull
     private function saveCSV()
     {
         foreach ($this->data as $type => $data) {
-            echo "Salvando em CSV: ($type)\n";
+            echo "Salvando {$type} em CSV\n";
             $csvFile = "csv/{$type}.csv";
             $fp = fopen($csvFile, 'a');
             foreach ($data as $index => $fields) {
@@ -97,7 +97,7 @@ class CNPJFull
             }
             echo "\n";
             fclose($fp);
-            unset($this->data[$type]);
+            $this->data[$type] = [];
         }
     }
 
@@ -108,7 +108,7 @@ class CNPJFull
             $zip = new ZipArchive();
             if ($zip->open("csv/{$type}.zip", ZipArchive::CREATE) === TRUE)
             {
-                echo "Compactando CSV ($type)\n";
+                echo "Compactando {$type}\n";
                 $zip->addFile($csvFile);
                 $zip->close();
                 if (file_exists("csv/{$type}.zip")) {
@@ -122,13 +122,13 @@ class CNPJFull
     public function strToArray($record) {
         $type = substr($record, 0, 1);
         if ($type === "1") {
-            $this->data['companies'][] = Company::getCompany($record);
+            $this->data['empresas'][] = Company::getCompany($record);
         }
         if ($type === "2") {
-            $this->data['partners'][] = Partner::getPartner($record);
+            $this->data['socios'][] = Partner::getPartner($record);
         }
         if ($type === "6") {
-            $this->data['cnaes'][] = Cnae::getCnae($record);
+            $this->data['cnae-secundarios'][] = Cnae::getCnae($record);
         }
     }
 
