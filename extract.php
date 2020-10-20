@@ -97,6 +97,7 @@ class CNPJFull
             }
             echo "\n";
             fclose($fp);
+            unset($this->data[$type]);
         }
     }
 
