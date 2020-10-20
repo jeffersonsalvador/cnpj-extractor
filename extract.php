@@ -21,7 +21,7 @@ class CNPJFull
     {
         $this->findZipFiles();
         $this->readZipFiles();
-//        $this->saveCSV();
+        $this->compactFiles();
     }
 
     private function findZipFiles()
@@ -74,7 +74,7 @@ class CNPJFull
             if ($retbytes) {
                 $cnt += strlen($buffer);
             }
-            echo ' -> ' . round((($i * self::CHUNK_SIZE) / $filesize) * 100) . "%\r";
+            $this->loading($i * self::CHUNK_SIZE, $filesize);
             $i++;
         }
         echo "\n";
@@ -88,25 +88,32 @@ class CNPJFull
     private function saveCSV()
     {
         foreach ($this->data as $type => $data) {
-            echo " -> SALVANDO CSV ($type)\n";
+            echo "Salvando em CSV: ($type)\n";
             $csvFile = "csv/{$type}.csv";
             $fp = fopen($csvFile, 'a');
             foreach ($data as $index => $fields) {
-                echo ' -> ' . round(($index / count($data)) * 100) . "%\r";
+                $this->loading($index, count($data));
                 fputcsv($fp, $fields);
             }
             echo "\n";
             fclose($fp);
-//            $zip = new ZipArchive();
-//            if ($zip->open("csv{$type}.zip", ZipArchive::CREATE) === TRUE)
-//            {
-//                echo "-> COMPACTANDO CSV ($type)\n";
-//                $zip->addFile($csvFile);
-//                $zip->close();
-//                if (file_exists("{$type}.zip")) {
-//                    unlink($csvFile);
-//                }
-//            }
+        }
+    }
+
+    private function compactFiles()
+    {
+        foreach ($this->data as $type => $data) {
+            $csvFile = "csv/{$type}.csv";
+            $zip = new ZipArchive();
+            if ($zip->open("csv/{$type}.zip", ZipArchive::CREATE) === TRUE)
+            {
+                echo "Compactando CSV ($type)\n";
+                $zip->addFile($csvFile);
+                $zip->close();
+                if (file_exists("csv/{$type}.zip")) {
+                    unlink($csvFile);
+                }
+            }
         }
         unset($this->data);
     }
@@ -129,7 +136,17 @@ class CNPJFull
         $size = strlen($message);
         echo "\n";
         echo "{$message} \n";
-        echo str_pad('', $size, '=', STR_PAD_LEFT) . "\n";
+//        echo str_pad('', $size, '-', STR_PAD_LEFT) . "\n";
+    }
+
+    public function loading($partial, $total)
+    {
+        $percent = round(($partial / $total) * 100);
+        $input = '';
+        for ($i = 2; $i <= $percent; $i+=2) {
+            $input .= '=';
+        }
+        echo '[' . str_pad($input, 50, '_', STR_PAD_RIGHT) . "] - {$percent}% \r";
     }
 
 }
