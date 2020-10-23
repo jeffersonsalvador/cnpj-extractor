@@ -28,12 +28,8 @@ class Company
     const UF = 'uf';
     const COD_MUNICIPIO = 'cod_municipio';
     const MUNICIPIO = 'municipio';
-    const DDD_1 = 'ddd_1';
     const TELEFONE_1 = 'telefone_1';
-    const DDD_2 = 'ddd_2';
     const TELEFONE_2 = 'telefone_2';
-    const DDD_FAX = 'ddd_fax';
-    const NUM_FAX = 'num_fax';
     const EMAIL = 'email';
     const QUALIF_RESP = 'qualif_resp';
     const CAPITAL_SOCIAL = 'capital_social';
@@ -58,30 +54,28 @@ class Company
         return [
             self::CNPJ =>               trim(substr($record, 3, 14)),
             self::MATRIZ_FILIAL =>      trim(substr($record, 17, 1)),
-            self::RAZAO_SOCIAL =>       trim(substr($record, 18, 150)),
-            self::NOME_FANTASIA =>      trim(substr($record, 168, 55)),
+            self::RAZAO_SOCIAL =>       self::removeSpecialChars(substr($record, 18, 150)),
+            self::NOME_FANTASIA =>      self::removeSpecialChars(substr($record, 168, 55)),
             self::SITUACAO =>           trim(substr($record, 223, 2)),
             self::DATA_SITUACAO =>      trim(substr($record, 225, 8)),
-            self::MOTIVO_SITUACAO =>    trim(substr($record, 233, 2)),
-            self::NM_CIDADE_EXTERIOR => trim(substr($record, 235, 55)),
+            self::MOTIVO_SITUACAO =>    self::removeSpecialChars(substr($record, 233, 2)),
+            self::NM_CIDADE_EXTERIOR => self::removeSpecialChars(substr($record, 235, 55)),
             self::COD_PAIS =>           trim(substr($record, 290, 3)),
-            self::NOME_PAIS =>          trim(substr($record,  293, 70)),
+            self::NOME_PAIS =>          self::removeSpecialChars(substr($record,  293, 70)),
             self::COD_NAT_JURIDICA =>   trim(substr($record, 363, 4)),
             self::DATA_INICIO_ATIV =>   trim(substr($record, 367, 8)),
             self::CNAE_FISCAL =>        trim(substr($record, 375,7)),
-            self::TIPO_LOGRADOURO =>    trim(substr($record, 382, 20)),
-            self::LOGRADOURO =>         trim(substr($record, 402, 60)),
-            self::NUMERO =>             trim(substr($record, 462, 6)),
-            self::COMPLEMENTO =>        trim(substr($record, 468, 156)),
-            self::BAIRRO =>             trim(substr($record, 624, 50)),
+            self::TIPO_LOGRADOURO =>    self::removeSpecialChars(substr($record, 382, 20)),
+            self::LOGRADOURO =>         self::removeSpecialChars(substr($record, 402, 60)),
+            self::NUMERO =>             self::removeSpecialChars(substr($record, 462, 6)),
+            self::COMPLEMENTO =>        self::removeSpecialChars(substr($record, 468, 156)),
+            self::BAIRRO =>             self::removeSpecialChars(substr($record, 624, 50)),
             self::CEP =>                trim(substr($record, 674, 8)),
             self::UF =>                 trim(substr($record, 682, 2)),
             self::COD_MUNICIPIO =>      trim(substr($record, 684, 4)),
-            self::MUNICIPIO =>          trim(substr($record, 688, 50)),
-            self::DDD_1 =>              trim(substr($record, 738, 4)),
-            self::TELEFONE_1 =>         trim(substr($record, 741, 8)),
-            self::DDD_2 =>              trim(substr($record, 750, 4)),
-            self::TELEFONE_2 =>         trim(substr($record, 754, 8)),
+            self::MUNICIPIO =>          self::removeSpecialChars(substr($record, 688, 50)),
+            self::TELEFONE_1 =>         trim(substr($record, 738, 12)),
+            self::TELEFONE_2 =>         trim(substr($record, 750, 12)),
             self::EMAIL =>              trim(substr($record, 774, 115)),
             self::QUALIF_RESP =>        trim(substr($record, 889, 2)),
             self::CAPITAL_SOCIAL =>     trim(substr($record, 891, 14)),
@@ -90,9 +84,14 @@ class Company
             self::DATA_OPCAO_SIMPLES => trim(substr($record, 908, 8)),
             self::DATA_EXC_SIMPLES =>   trim(substr($record, 916, 8)),
             self::OPC_MEI =>            trim(substr($record, 924, 1)),
-            self::SIT_ESPECIAL =>       trim(substr($record, 925, 23)),
+            self::SIT_ESPECIAL =>       self::removeSpecialChars(substr($record, 925, 23)),
             self::DATA_SIT_ESPECIAL =>  trim(substr($record, 948, 8)),
         ];
+    }
+
+    private static function removeSpecialChars($string)
+    {
+        return preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', trim($string));
     }
 
 }
