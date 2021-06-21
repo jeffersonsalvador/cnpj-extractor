@@ -11,5 +11,7 @@
     "autoload": {
         "psr-4": {"App\\": "app/"}
     },
-    "require": {}
+    "require": {
+        "robmorgan/phinx": "^0.12.7"
+    }
 }
