@@ -1,6 +1,6 @@
 {
-    "name": "jeffersonsalvador/cnpj-full",
-    "description": "Script PHP para ler os dados públicos do CNPJ disponibilizados pela Receita Federal e convertê-los em arquivos CSV.",
+    "name": "jeffersonsalvador/cnpj-dados-publicos-receita-federal",
+    "description": "Script PHP para ler os dados públicos do CNPJ disponibilizados pela Receita Federal e salvá-los em uma base de dados MySQL.",
     "license": "MIT",
     "authors": [
         {

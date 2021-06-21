@@ -76,10 +76,10 @@ class Company
             self::MUNICIPIO =>          self::removeSpecialChars(substr($record, 688, 50)),
             self::TELEFONE_1 =>         trim(substr($record, 738, 12)),
             self::TELEFONE_2 =>         trim(substr($record, 750, 12)),
-            self::EMAIL =>              trim(substr($record, 774, 115)),
+            self::EMAIL =>              self::removeSpecialChars(substr($record, 774, 115)),
             self::QUALIF_RESP =>        trim(substr($record, 889, 2)),
             self::CAPITAL_SOCIAL =>     trim(substr($record, 891, 14)),
-            self::PORTE =>              trim(substr($record, 905, 2)),
+            self::PORTE =>              self::removeSpecialChars(substr($record, 905, 2)),
             self::OPC_SIMPLES =>        trim(substr($record, 907, 2)),
             self::DATA_OPCAO_SIMPLES => trim(substr($record, 908, 8)),
             self::DATA_EXC_SIMPLES =>   trim(substr($record, 916, 8)),
@@ -91,7 +91,7 @@ class Company
 
     private static function removeSpecialChars($string)
     {
-        return preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', trim($string));
+        return preg_replace('/[^a-zA-Z0-9_@ %\[\]\.\(\)%&-]/s', '', trim($string));
     }
 
 }
