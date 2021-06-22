@@ -1,4 +1,8 @@
 <?php
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 return
 [
@@ -8,22 +12,22 @@ return
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
-        'default_environment' => 'development',
+        'default_environment' => env('ENVIRONTMENT'),
         'production' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
-            'name' => 'production_db',
-            'user' => 'root',
-            'pass' => '',
+            'host' => env('PROD_DB_HOST'),
+            'name' => env('PROD_DB_NAME'),
+            'user' => env('PROD_DB_USER'),
+            'pass' => env('PROD_DB_PASSWORD'),
             'port' => '3306',
             'charset' => 'utf8',
         ],
         'development' => [
             'adapter' => 'mysql',
-            'host' => 'localhost',
-            'name' => 'cnpj-dados-publicos',
-            'user' => 'root',
-            'pass' => 'root',
+            'host' => env('DEV_DB_HOST'),
+            'name' => env('DEV_DB_NAME'),
+            'user' => env('DEV_DB_USER'),
+            'pass' => env('DEV_DB_PASSWORD'),
             'port' => '3306',
             'charset' => 'utf8',
         ],

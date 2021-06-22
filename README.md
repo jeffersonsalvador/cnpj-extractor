@@ -1,10 +1,22 @@
-# CNPJ - Receita Federal - Dados Públicos
-- Fonte oficial da Receita Federal do Brasil, [aqui](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj).
-- Layout dos arquivos, [aqui](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/arquivos/NOVOLAYOUTDOSDADOSABERTOSDOCNPJ.pdf).
+# PROJETO EM DESENVOLVIMENTO
 
-A Receita Federal do Brasil disponibiliza bases com os dados públicos do cadastro nacional de pessoas jurídicas (CNPJ).
+[comment]: <> (# CNPJ - Receita Federal - Dados Públicos)
 
-De forma geral, nelas constam as mesmas informações que conseguimos ver no cartão do CNPJ, quando fazemos uma consulta individual, acrescidas de outros dados de Simples Nacional, sócios e etc. Análises muito ricas podem sair desses dados, desde econômicas, mercadológicas até investigações.
+[comment]: <> (- Fonte oficial da Receita Federal do Brasil, [aqui]&#40;https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj&#41;.)
+
+[comment]: <> (- Layout dos arquivos, [aqui]&#40;https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/arquivos/NOVOLAYOUTDOSDADOSABERTOSDOCNPJ.pdf&#41;.)
+
+[comment]: <> (A Receita Federal do Brasil disponibiliza bases com os dados públicos do cadastro nacional de pessoas jurídicas &#40;CNPJ&#41;.)
+
+[comment]: <> (De forma geral, nelas constam as mesmas informações que conseguimos ver no cartão do CNPJ, quando fazemos uma consulta individual, acrescidas de outros dados de Simples Nacional, sócios e etc. Análises muito ricas podem sair desses dados, desde econômicas, mercadológicas até investigações.)
+
+[comment]: <> (## Instalação)
+
+[comment]: <> (```)
+
+[comment]: <> (composer install)
+
+[comment]: <> (```)
 
 [comment]: <> (Nesse repositório consta um processo de ETL para **i&#41;** baixar os arquivos; **ii&#41;** descompactar; **iii&#41;** ler, tratar e **iv&#41;** inserir num banco de dados relacional PostgreSQL.)
 

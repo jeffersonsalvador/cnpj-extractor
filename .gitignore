@@ -1,4 +1,4 @@
 vendor/
 zip/*
-!zip/.gitkeep
 .idea
+.env
