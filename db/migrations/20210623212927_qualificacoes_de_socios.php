@@ -18,6 +18,10 @@ final class QualificacoesDeSocios extends AbstractMigration
      */
     public function change(): void
     {
-
+        $table = $this->table('cnaes');
+        $table
+            ->addColumn('codigo', 'string', ['limit' => 2])
+            ->addColumn('descricao', 'string', ['limit' => 255])
+            ->create();
     }
 }

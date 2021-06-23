@@ -18,6 +18,11 @@ final class NaturezasJuridicas extends AbstractMigration
      */
     public function change(): void
     {
-
+        $table = $this->table('naturezas_juridicas');
+        $table
+            ->addColumn('cnpj_basico', 'string', ['limit' => 8])
+            ->addColumn('identificador_socio', 'smallinteger', ['limit' => 1])
+            ->addColumn('nome', 'string')
+            ->create();
     }
 }

@@ -18,6 +18,10 @@ final class Municipios extends AbstractMigration
      */
     public function change(): void
     {
-
+        $table = $this->table('municipios');
+        $table
+            ->addColumn('codigo', 'string', ['limit' => 4])
+            ->addColumn('descricao', 'string', ['limit' => 255])
+            ->create();
     }
 }

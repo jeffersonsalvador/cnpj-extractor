@@ -23,6 +23,5 @@ final class Empresas extends AbstractMigration
             ->addColumn('cnpj', 'string', ['limit' => 14])
             ->addColumn('natureza_juridica', 'string', ['limit' => 2])
             ->create();
-
     }
 }
