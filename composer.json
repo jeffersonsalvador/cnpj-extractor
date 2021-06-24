@@ -15,6 +15,8 @@
         "robmorgan/phinx": "^0.12.7"
     },
     "require": {
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "illuminate/database": "^8.48",
+      "ext-zip": "*"
     }
 }
