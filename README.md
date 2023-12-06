@@ -2,7 +2,7 @@
 
 # CNPJ - Dados públicos da Receita Federal
 ___
-Script em PHP para carregar os dados públicos da Receita Federal do Brasil (RFB) no banco de dados MySQL.
+Script em PHP para carregar os dados públicos da Receita Federal do Brasil (RFB) no banco de dados Postgres.
 
 ## Pré-requisitos
 - Docker
