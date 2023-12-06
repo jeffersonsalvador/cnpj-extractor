@@ -12,7 +12,7 @@ services:
     ports:
       - "8000:8000"
   db:
-    image: postgres:latest
+    image: postgres:16
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
