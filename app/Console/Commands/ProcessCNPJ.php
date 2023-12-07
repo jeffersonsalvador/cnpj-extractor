@@ -101,15 +101,17 @@ class ProcessCNPJ extends Command
 
         $csv = Reader::createFromPath($filePath, 'r');
         $csv->setDelimiter(';');
+        $csv->setEnclosure('"');
         $progressBar = new ProgressBar($this->output, iterator_count($csv->getRecords()));
         $batchData = [];
         $batchSize = env('BATCH_SIZE', 1000);
+        $modelFields = $model->getFillable();
 
         try {
             foreach ($csv->getRecords() as $record) {
                 $progressBar->advance();
                 $record = mb_convert_encoding($record, 'UTF-8', 'ISO-8859-1');
-                $data = array_combine($model->getFillable(), $record);
+                $data = array_combine($modelFields, $record);
                 $data['created_at'] = Carbon::now();
                 $data['updated_at'] = Carbon::now();
 

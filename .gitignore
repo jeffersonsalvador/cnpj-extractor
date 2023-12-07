@@ -5,4 +5,4 @@
 Homestead.json
 Homestead.yaml
 .phpunit.result.cache
-/data/zip/*
+/data/*
