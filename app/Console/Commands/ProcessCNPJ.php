@@ -126,7 +126,8 @@ class ProcessCNPJ extends Command
                 }
             }
 
-            $progressBar->finish("\n $totalRecords records processed.");
+            $progressBar->finish();
+            $this->line("\n $totalRecords records processed.");
 
             // Insert the last batch if there are any remaining records
             if (!empty($batchData)) {
