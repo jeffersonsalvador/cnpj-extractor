@@ -8,7 +8,8 @@
         "php": "^8.1",
         "laravel/lumen-framework": "^10.0",
         "league/csv": "^9.12",
-        "league/flysystem-ziparchive": "^3.21"
+        "league/flysystem-ziparchive": "^3.21",
+        "ext-zip": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

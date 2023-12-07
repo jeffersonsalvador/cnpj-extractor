@@ -95,6 +95,11 @@ $app->configure('app');
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
+$app->register(\Illuminate\Translation\TranslationServiceProvider::class);
+//$translator = $app->make('translator');
+//$translator->addNamespace('lang', resource_path('lang'));
+//$translator->setLocale('pt_BR');
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
