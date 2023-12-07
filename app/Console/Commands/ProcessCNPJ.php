@@ -103,7 +103,7 @@ class ProcessCNPJ extends Command
         $csv->setDelimiter(';');
         $progressBar = new ProgressBar($this->output, iterator_count($csv->getRecords()));
         $batchData = [];
-        $batchSize = 1;
+        $batchSize = env('BATCH_SIZE', 1000);
 
         try {
             foreach ($csv->getRecords() as $record) {
