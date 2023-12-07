@@ -102,7 +102,10 @@ class ProcessCNPJ extends Command
         $csv = Reader::createFromPath($filePath, 'r');
         $csv->setDelimiter(';');
         $csv->setEnclosure('"');
-        $progressBar = new ProgressBar($this->output, iterator_count($csv->getRecords()));
+        $csv->setEscape('');
+        $totalRecords = $csv->count();
+
+        $progressBar = new ProgressBar($this->output, $totalRecords);
         $batchData = [];
         $batchSize = env('BATCH_SIZE', 1000);
         $modelFields = $model->getFillable();
@@ -110,13 +113,11 @@ class ProcessCNPJ extends Command
         try {
             foreach ($csv->getRecords() as $record) {
                 $progressBar->advance();
-                $record = mb_convert_encoding($record, 'UTF-8', 'ISO-8859-1');
+                $record = $this->normalizeData($record);
+
                 $data = array_combine($modelFields, $record);
                 $data['created_at'] = Carbon::now();
                 $data['updated_at'] = Carbon::now();
-
-                $data = $this->normalizeData($data);
-
                 $batchData[] = $data;
 
                 if (count($batchData) >= $batchSize) {
@@ -125,7 +126,7 @@ class ProcessCNPJ extends Command
                 }
             }
 
-            $progressBar->finish();
+            $progressBar->finish("\n $totalRecords records processed.");
 
             // Insert the last batch if there are any remaining records
             if (!empty($batchData)) {
@@ -164,14 +165,21 @@ class ProcessCNPJ extends Command
         }
     }
 
-    private function normalizeData(array $data): array
+    private function normalizeData(array $record): array
     {
-        foreach ($data as $key => $value) {
-            // Substitui vírgula por ponto em campos numéricos específicos
-            if (in_array($key, ['capital_social']) && is_string($value)) {
-                $data[$key] = str_replace(',', '.', $value);
+        return array_map(function($field) {
+            // Remove possíveis barras invertidas antes de aspas
+            $field = str_replace('\\', '', $field);
+
+            // Converte a codificação de caracteres para UTF-8
+            $field = mb_convert_encoding($field, 'UTF-8', 'ISO-8859-1');
+
+            // Substitui vírgula por ponto em valores numéricos
+            if (is_numeric(str_replace(',', '.', $field))) {
+                $field = str_replace(',', '.', $field);
             }
-        }
-        return $data;
+
+            return $field;
+        }, $record);
     }
 }
