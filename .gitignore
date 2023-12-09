@@ -1,9 +1,9 @@
 .idea
-.env
-/vendor
-/node_modules
+src/.env
+src/vendor
+src/node_modules
 /.idea
 Homestead.json
 Homestead.yaml
 .phpunit.result.cache
-/data/*
+src/data/*
