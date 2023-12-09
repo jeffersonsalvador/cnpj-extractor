@@ -72,6 +72,25 @@ cd docker
 make up
 ```
 
+This will build and run the following services:
+
+- `app`: The Laravel application.
+- `nginx`: The web server for the application.
+- `postgres`: The PostgreSQL database.
+- `redis`: The Redis server.
+
+## Usage
+Once the containers are up and running, you can:
+
+- Access the application via http://localhost:8080.
+- Connect to the database using the credentials provided in the .env file.
+- Monitor the Redis instance on port 6379.
+
+- To process CNPJ data:
+
+1. Place your CSV files in the designated directory (as mentioned in the application documentation).
+2. Use the application's web interface (not finished yet) or CLI commands to start the processing.
+
 ## License
 Distributed under the MIT License. See LICENSE for more information.
 

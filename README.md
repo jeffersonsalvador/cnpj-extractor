@@ -45,21 +45,56 @@ O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https:
 - `/src` - Código fonte da aplicação em Laravel.
 - `/data` - Arquivos de dados da Receita Federal.
 
-## Configuração Inicial
+## Pré-requisitos
+Antes de começar, certifique-se de que os seguintes requisitos foram atendidos:
 
-- Entre na pasta do projeto `/src`, renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.
+- Docker e Docker Compose instalados em sua máquina.
+- Conhecimento básico de Laravel, Docker e PostgreSQL.
+  
+## Instalação
+Para configurar o projeto para desenvolvimento, siga estes passos:
 
-- Ainda na pasta do projeto, wxecute o comando `composer install` para instalar as dependências do projeto.
+1. Clone o repositório.
+```
+git clone https://github.com/jeffersonsalvador/cnpj-dados-publicos-receita-federal.git
+cd cnpj-dados-publicos-receita-federal
+```
+
+2. Navegue até o diretório docker e inicie os serviços:
+```
+cd docker
+make up
+```
+
+Isso irá construir e executar os seguintes serviços:
+
+- `app`: A aplicação Laravel.
+- `nginx`: O servidor web da aplicação.
+- `postgres`: O banco de dados PostgreSQL.
+- `redis`: O servidor Redis.
+
+## Uso
+
+Uma vez que os contêineres estejam em execução, você pode:
+
+- Acessar a aplicação via http://localhost:8080.
+- Conectar ao banco de dados usando as credenciais fornecidas no arquivo .env.
+- Monitorar a instância do Redis na porta 6379.
+
+Para processar dados CNPJ:
+
+1. Coloque seus arquivos CSV no diretório designado (conforme mencionado na documentação da aplicação).
+2. Use a interface web da aplicação (em desenvolvimento) ou comandos CLI para iniciar o processamento.
 
 ## Docker
 
 Para construir e executar a aplicação, você usará os comandos do Makefile:
 
-`make up` para iniciar os containers e a aplicação web.
+`make up` para iniciar os containers e a aplicação web (em desenvolvimento).
 
 ou
 
-`make cnpj-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
+`make up-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
 
 Outros comando úteis:
 
