@@ -4,20 +4,17 @@
 
 # CNPJ - Dados públicos da Receita Federal - em desenvolvimento
 
-[//]: # ()
-[//]: # (![License]&#40;https://img.shields.io/badge/license-MIT-blue.svg&#41;)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[//]: # ()
-[//]: # (___)
+___
 
-[//]: # (Script em PHP para carregar os dados públicos da Receita Federal do Brasil &#40;RFB&#41; no banco de dados Postgres.)
+Script em PHP para carregar os dados públicos da Receita Federal do Brasil (RFB) no banco de dados MySQL ou Postgres.
 
-[//]: # ()
-[//]: # (## Pré-requisitos)
+Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
 
-[//]: # (- Docker)
+## Pré-requisitos
 
-[//]: # (- Composer)
+- Docker
 
 [//]: # ()
 [//]: # (## Configuração Inicial)
