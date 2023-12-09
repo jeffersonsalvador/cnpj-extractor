@@ -45,6 +45,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../src:/var/www
+      - ../data:/var/www/data
     ports:
       - "9000:9000"
     working_dir: /var/www
