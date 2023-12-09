@@ -1,22 +1,28 @@
 🇺🇸 English version [here](README.en.md)
 
 ---
+# Projecto em desenvolvimento, lançamento em janeiro de 2024
 
-# CNPJ - Dados públicos da Receita Federal - em desenvolvimento
+[//]: # (# CNPJ - Dados públicos da Receita Federal - em desenvolvimento)
+
+---
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-___
+## Descrição
 
-Script em PHP para carregar os dados públicos da Receita Federal do Brasil (RFB) no banco de dados MySQL ou Postgres.
+Este repositório contém uma aplicação web projetada para processamento de dados do CNPJ (o equivalente no Brasil a um número de identificação fiscal de empresas). É construído usando o framework Laravel para PHP e utiliza Docker para facilitar a configuração e a implantação. A aplicação lida com arquivos CSV de grande porte, processa-os e armazena os dados em um banco de dados PostgreSQL para análises posteriores.
 
-Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
+O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - última atualização em 24/11/2023.
 
-## Pré-requisitos
+## Funcionalidades
+- Processamento de arquivos CSV de grande porte com dados CNPJ.
+- Armazenamento de dados processados em banco de dados PostgreSQL.
+- Integração com Redis para otimização de desempenho.
+- Nginx como proxy reverso para o servidor web.
+- Configuração conteinerizada com Docker e Docker Compose.
 
-- Docker
-
-## Estrutura do project
+## Estrutura do projeto
 
 ```
 /cnoj-dados-publicos-receita-federal
@@ -35,11 +41,9 @@ Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
 │── /data
 ```
 
-`/docker` - Arquivos de configuração do Docker.
-
-`/src` - Código fonte da aplicação em Laravel.
-
-`/data` - Arquivos de dados da Receita Federal.
+- `/docker` - Arquivos de configuração do Docker.
+- `/src` - Código fonte da aplicação em Laravel.
+- `/data` - Arquivos de dados da Receita Federal.
 
 ## Configuração Inicial
 
@@ -51,13 +55,11 @@ Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
 
 Para construir e executar a aplicação, você usará os comandos do Makefile:
 
-1. `make build` para construir o ambiente.
-
-2. `make up` para iniciar os containers e a aplicação web.
+`make up` para iniciar os containers e a aplicação web.
 
 ou
 
-2. `make cnpj-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
+`make cnpj-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
 
 Outros comando úteis:
 
@@ -90,3 +92,11 @@ Após o processamento:
 - Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.
 
 Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.
+
+## Licença
+Distribuído sob a Licença MIT. Veja LICENSE para mais informações.
+
+## Contato
+Seu Nome – contato@jeffersoncosta.dev
+
+Link do Projeto: https://github.com/jeffersonsalvador/cnpj-dados-publicos-receita-federal
