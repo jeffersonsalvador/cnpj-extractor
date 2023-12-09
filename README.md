@@ -4,51 +4,80 @@
 
 # CNPJ - Dados públicos da Receita Federal - em desenvolvimento
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[//]: # ()
+[//]: # (![License]&#40;https://img.shields.io/badge/license-MIT-blue.svg&#41;)
 
-___
-Script em PHP para carregar os dados públicos da Receita Federal do Brasil (RFB) no banco de dados Postgres.
+[//]: # ()
+[//]: # (___)
 
-## Pré-requisitos
-- Docker
-- Composer
+[//]: # (Script em PHP para carregar os dados públicos da Receita Federal do Brasil &#40;RFB&#41; no banco de dados Postgres.)
 
-## Configuração Inicial
-- Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.
-- Execute o comando `composer install` para instalar as dependências do projeto.
+[//]: # ()
+[//]: # (## Pré-requisitos)
 
-## Executando a Aplicação
-Para construir e executar a aplicação, você usará os comandos do Makefile:
+[//]: # (- Docker)
 
-1. `make build` para construir o ambiente.
-2. `make up` para iniciar os containers.
+[//]: # (- Composer)
 
-Outros comando úteis:
+[//]: # ()
+[//]: # (## Configuração Inicial)
 
-- `make down` para parar e remover os containers.
-- `make restart` para reiniciar os containers.
-- `make logs` para acompanhar os logs.
+[//]: # (- Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.)
 
-## Database
-Run the migrations to create the tables with `php artisan migrate` command.
+[//]: # (- Execute o comando `composer install` para instalar as dependências do projeto.)
 
-## Redis
+[//]: # ()
+[//]: # (## Executando a Aplicação)
 
-Neste projeto, o Redis é utilizado como um armazenamento temporário de dados durante o processamento de arquivos CSV. O Redis oferece um armazenamento rápido em memória, o que melhora a performance ao lidar com grandes volumes de dados.
+[//]: # (Para construir e executar a aplicação, você usará os comandos do Makefile:)
 
-### Processamento de CSV
+[//]: # ()
+[//]: # (1. `make build` para construir o ambiente.)
 
-Durante o processamento de arquivos CSV:
+[//]: # (2. `make up` para iniciar os containers.)
 
-- Cada registro é normalizado e serializado como JSON.
-- Os registros são armazenados temporariamente no Redis em uma lista chamada `processed_records`.
+[//]: # ()
+[//]: # (Outros comando úteis:)
 
-### Inserção de Dados
+[//]: # ()
+[//]: # (- `make down` para parar e remover os containers.)
 
-Após o processamento:
+[//]: # (- `make restart` para reiniciar os containers.)
 
-- Os dados são lidos do Redis.
-- Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.
+[//]: # (- `make logs` para acompanhar os logs.)
 
-Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.
+[//]: # ()
+[//]: # (## Database)
 
+[//]: # (Run the migrations to create the tables with `php artisan migrate` command.)
+
+[//]: # ()
+[//]: # (## Redis)
+
+[//]: # ()
+[//]: # (Neste projeto, o Redis é utilizado como um armazenamento temporário de dados durante o processamento de arquivos CSV. O Redis oferece um armazenamento rápido em memória, o que melhora a performance ao lidar com grandes volumes de dados.)
+
+[//]: # ()
+[//]: # (### Processamento de CSV)
+
+[//]: # ()
+[//]: # (Durante o processamento de arquivos CSV:)
+
+[//]: # ()
+[//]: # (- Cada registro é normalizado e serializado como JSON.)
+
+[//]: # (- Os registros são armazenados temporariamente no Redis em uma lista chamada `processed_records`.)
+
+[//]: # ()
+[//]: # (### Inserção de Dados)
+
+[//]: # ()
+[//]: # (Após o processamento:)
+
+[//]: # ()
+[//]: # (- Os dados são lidos do Redis.)
+
+[//]: # (- Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.)
+
+[//]: # ()
+[//]: # (Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.)
