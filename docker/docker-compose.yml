@@ -26,7 +26,7 @@ services:
     environment:
       POSTGRES_DB: cnpj
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD:
+      POSTGRES_PASSWORD: postgres
 
   # Application Service
   app:
