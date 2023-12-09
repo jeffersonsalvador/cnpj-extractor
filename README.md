@@ -16,6 +16,31 @@ Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
 
 - Docker
 
+## Estrutura do project
+
+```
+/cnoj-dados-publicos-receita-federal
+│
+├── /docker
+│   ├── docker-compose.yml
+│   ├── Dockerfile.app
+│   └── /nginx
+│       └── default.conf
+│
+│── /src
+│   ├── /app
+│   ├── .env.example
+│   ├── ...
+│
+│── /data
+```
+
+`/docker` - Arquivos de configuração do Docker.
+
+`/src` - Código fonte da aplicação em Laravel.
+
+`/data` - Arquivos de dados da Receita Federal.
+
 ## Configuração Inicial
 
 - Entre na pasta do projeto `/src`, renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.
@@ -42,36 +67,26 @@ Outros comando úteis:
 
 ## Database
 
+Na pasta da aplicação `/src`, execute o comando `php artisan migrate` para criar as tabelas no banco de dados.
 
-Run the migrations to create the tables with `php artisan migrate` command.
+## Redis
 
+Neste projeto, o Redis é utilizado como um armazenamento temporário de dados durante o processamento de arquivos CSV. O Redis oferece um armazenamento rápido em memória, o que melhora a performance ao lidar com grandes volumes de dados.
 
-[//]: # (## Redis)
+### Processamento de CSV
 
-[//]: # ()
-[//]: # (Neste projeto, o Redis é utilizado como um armazenamento temporário de dados durante o processamento de arquivos CSV. O Redis oferece um armazenamento rápido em memória, o que melhora a performance ao lidar com grandes volumes de dados.)
+Durante o processamento de arquivos CSV:
 
-[//]: # ()
-[//]: # (### Processamento de CSV)
+- Cada registro é normalizado e serializado como JSON.
 
-[//]: # ()
-[//]: # (Durante o processamento de arquivos CSV:)
+- Os registros são armazenados temporariamente no Redis em uma lista chamada `processed_records_{$type}`.
 
-[//]: # ()
-[//]: # (- Cada registro é normalizado e serializado como JSON.)
+### Inserção de Dados
 
-[//]: # (- Os registros são armazenados temporariamente no Redis em uma lista chamada `processed_records`.)
+Após o processamento:
 
-[//]: # ()
-[//]: # (### Inserção de Dados)
+- Os dados são lidos do Redis.
 
-[//]: # ()
-[//]: # (Após o processamento:)
+- Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.
 
-[//]: # ()
-[//]: # (- Os dados são lidos do Redis.)
-
-[//]: # (- Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.)
-
-[//]: # ()
-[//]: # (Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.)
+Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.
