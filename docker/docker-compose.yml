@@ -28,6 +28,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+    # Redis Service
+  redis:
+    image: redis:6.0-alpine # Use Redis version 6.0 Alpine for smaller image size
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+
   # Application Service
   app:
     container_name: app

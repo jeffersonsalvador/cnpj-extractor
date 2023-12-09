@@ -1,0 +1,3 @@
+[BR] - Coloque os arquivos zip do site da receita federal nessa pasta ou na pasta configurada no arquivo /src/.env
+
+[EN] - Place the zip files from the IRS website in this folder or in the folder configured in the /src/.env file

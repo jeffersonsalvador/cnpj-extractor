@@ -16,39 +16,36 @@ Para rodar toda a aplicação localmente, é necessário ter o Docker instalado.
 
 - Docker
 
-[//]: # ()
-[//]: # (## Configuração Inicial)
+## Configuração Inicial
 
-[//]: # (- Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.)
+- Entre na pasta do projeto `/src`, renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente.
 
-[//]: # (- Execute o comando `composer install` para instalar as dependências do projeto.)
+- Ainda na pasta do projeto, wxecute o comando `composer install` para instalar as dependências do projeto.
 
-[//]: # ()
-[//]: # (## Executando a Aplicação)
+## Docker
 
-[//]: # (Para construir e executar a aplicação, você usará os comandos do Makefile:)
+Para construir e executar a aplicação, você usará os comandos do Makefile:
 
-[//]: # ()
-[//]: # (1. `make build` para construir o ambiente.)
+1. `make build` para construir o ambiente.
 
-[//]: # (2. `make up` para iniciar os containers.)
+2. `make up` para iniciar os containers e a aplicação web.
 
-[//]: # ()
-[//]: # (Outros comando úteis:)
+ou
 
-[//]: # ()
-[//]: # (- `make down` para parar e remover os containers.)
+2. `make cnpj-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
 
-[//]: # (- `make restart` para reiniciar os containers.)
+Outros comando úteis:
 
-[//]: # (- `make logs` para acompanhar os logs.)
 
-[//]: # ()
-[//]: # (## Database)
+- `make down` para parar e remover os containers.
+- `make restart` para reiniciar os containers.
 
-[//]: # (Run the migrations to create the tables with `php artisan migrate` command.)
+## Database
 
-[//]: # ()
+
+Run the migrations to create the tables with `php artisan migrate` command.
+
+
 [//]: # (## Redis)
 
 [//]: # ()
