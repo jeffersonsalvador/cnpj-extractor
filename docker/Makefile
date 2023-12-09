@@ -6,8 +6,9 @@ down:
 
 restart: down up
 
-cnpj-terminal:
+up-terminal:
 	docker-compose stop
 	docker-compose up -d redis db app
 
-cnpj-gui: up
+cnpj-app:
+	docker-compose exec app bash
