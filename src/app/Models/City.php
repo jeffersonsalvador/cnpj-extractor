@@ -13,7 +13,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
+    /**
+     * @var string
+     */
     protected $primaryKey = 'code';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
     protected $fillable = [
         'code',
         'name'
