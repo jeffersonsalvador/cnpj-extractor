@@ -9,12 +9,22 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\ProcessCsvRecords;
+use App\Models\City;
+use App\Models\Cnae;
+use App\Models\Company;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
+use League\Csv\Exception;
+use League\Csv\InvalidArgument;
+use League\Csv\Reader;
+use League\Csv\UnavailableStream;
 use Symfony\Component\Console\Helper\ProgressBar;
+use ZipArchive;
 
 class ProcessCNPJ extends Command
 {
@@ -149,15 +159,16 @@ class ProcessCNPJ extends Command
 
     /**
      * Store the batch data and dispatch a job
+     *
      * @param string $redisKey
      * @param array $batchData
      * @param Model $model
      * @return void
      */
-    private function storeAndDispatchJob($redisKey, $batchData, $model): void
+    private function storeAndDispatchJob(string $redisKey, array $batchData, Model $model): void
     {
         Redis::lpush($redisKey, json_encode($batchData));
-        Queue::push(new ProcessCsvRecords($redisKey, $model));
+        ProcessCsvRecords::dispatch($redisKey, get_class($model));
     }
 
     /**
