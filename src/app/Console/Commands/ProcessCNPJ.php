@@ -137,9 +137,6 @@ class ProcessCNPJ extends Command
             $progressBar->advance();
             $record = $this->normalizeData($record);
             $data = array_combine($modelFields, $record);
-
-//                $data['created_at'] = Carbon::now();
-//                $data['updated_at'] = Carbon::now();
             $batchData[] = $data;
 
             if (count($batchData) >= $batchSize) {
@@ -149,7 +146,6 @@ class ProcessCNPJ extends Command
         }
 
         $progressBar->finish();
-        $this->line("\n $totalRecords records processed.");
 
         // Insert the last batch if there are any remaining records
         if (!empty($batchData)) {
@@ -167,8 +163,9 @@ class ProcessCNPJ extends Command
      */
     private function storeAndDispatchJob(string $redisKey, array $batchData, Model $model): void
     {
-        Redis::lpush($redisKey, json_encode($batchData));
-        ProcessCsvRecords::dispatch($redisKey, get_class($model));
+        $uid = uniqid();
+        Redis::lpush("$redisKey-$uid", json_encode($batchData));
+        ProcessCsvRecords::dispatch("$redisKey-$uid", get_class($model));
     }
 
     /**
