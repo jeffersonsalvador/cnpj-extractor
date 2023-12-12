@@ -13,6 +13,7 @@ use App\Jobs\ProcessCsvRecords;
 use App\Models\City;
 use App\Models\Cnae;
 use App\Models\Company;
+use App\Models\Country;
 use App\Models\LegalNature;
 use App\Models\PartnerQualification;
 use Carbon\Carbon;
@@ -190,6 +191,7 @@ class ProcessCNPJ extends Command
     {
         return match (true) {
             str_contains($filename, $this->getFileType('CITY', 'MUNIC')) => app(City::class),
+            str_contains($filename, $this->getFileType('COUNTRY', 'PAIS')) => app(Country::class),
             str_contains($filename, $this->getFileType('CNAE', 'CNAE')) => app(Cnae::class),
             str_contains($filename, $this->getFileType('COMPANY', 'EMPRE')) => app(Company::class),
             str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJU')) => app(LegalNature::class),
