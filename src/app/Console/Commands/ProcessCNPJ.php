@@ -15,6 +15,7 @@ use App\Models\Cnae;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\LegalNature;
+use App\Models\Partner;
 use App\Models\PartnerQualification;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -195,6 +196,7 @@ class ProcessCNPJ extends Command
             str_contains($filename, $this->getFileType('CNAE', 'CNAE')) => app(Cnae::class),
             str_contains($filename, $this->getFileType('COMPANY', 'EMPRE')) => app(Company::class),
             str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJU')) => app(LegalNature::class),
+            str_contains($filename, $this->getFileType('PARTNER', 'SOCIO')) => app(Partner::class),
             str_contains(
                 $filename,
                 $this->getFileType('PARTNER_QUALIFICATION', 'QUALS')

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partners', function (Blueprint $table) {
-            $table->string('basic_cnpj', 8);
+            $table->string('basic_cnpj', 8)->unique()->primary();
             $table->integer('partner_identifier');
             $table->string('partner_name');
             $table->string('cnpj_cpf_partner', 14);
