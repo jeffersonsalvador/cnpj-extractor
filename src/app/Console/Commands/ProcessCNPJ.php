@@ -13,6 +13,7 @@ use App\Jobs\ProcessCsvRecords;
 use App\Models\City;
 use App\Models\Cnae;
 use App\Models\Company;
+use App\Models\LegalNature;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -190,6 +191,7 @@ class ProcessCNPJ extends Command
             str_contains($filename, $this->getFileType('CITY', 'MUNIC')) => app(City::class),
             str_contains($filename, $this->getFileType('CNAE', 'CNAE')) => app(Cnae::class),
             str_contains($filename, $this->getFileType('COMPANY', 'EMPRE')) => app(Company::class),
+            str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJU')) => app(LegalNature::class),
             default => null
         };
     }
