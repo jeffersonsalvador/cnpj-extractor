@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('partner_qualifications', function (Blueprint $table) {
-            $table->string('code');
+            $table->string('code')->unique()->primary();
             $table->string('name');
             $table->timestamps();
         });
