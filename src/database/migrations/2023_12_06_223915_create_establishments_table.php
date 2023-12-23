@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('fax_number')->nullable();
             $table->string('email')->nullable();
             $table->string('special_situation')->nullable();
-            $table->date('special_situation_date')->nullable();
+            $table->date('special_situation_date')->nullable()->default(null);
             $table->timestamps();
         });
     }
