@@ -14,6 +14,7 @@ use App\Models\City;
 use App\Models\Cnae;
 use App\Models\Company;
 use App\Models\Country;
+use App\Models\Establishment;
 use App\Models\LegalNature;
 use App\Models\Partner;
 use App\Models\PartnerQualification;
@@ -193,7 +194,7 @@ class ProcessCNPJ extends Command
             str_contains($filename, $this->getFileType('COUNTRY', 'PAISCSV')) => app(Country::class),
             str_contains($filename, $this->getFileType('CNAE', 'CNAECSV')) => app(Cnae::class),
             str_contains($filename, $this->getFileType('COMPANY', 'EMPRECSV')) => app(Company::class),
-            str_contains($filename, $this->getFileType('ESTABLISHMENT', 'ESTABELE')) => app(Company::class),
+            str_contains($filename, $this->getFileType('ESTABLISHMENT', 'ESTABELE')) => app(Establishment::class),
             str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJUCSV')) => app(LegalNature::class),
             str_contains($filename, $this->getFileType('PARTNER', 'SOCIOCSV')) => app(Partner::class),
             str_contains(
