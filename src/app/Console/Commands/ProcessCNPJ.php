@@ -17,11 +17,9 @@ use App\Models\Country;
 use App\Models\LegalNature;
 use App\Models\Partner;
 use App\Models\PartnerQualification;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use League\Csv\Exception;
 use League\Csv\InvalidArgument;
@@ -135,6 +133,7 @@ class ProcessCNPJ extends Command
         $batchData = [];
         $batchSize = env('BATCH_SIZE', 1000);
         $modelFields = $model->getFillable();
+        dd($modelFields);
         $redisKey = 'processed_' . $model->getTable();
 
         foreach ($csv->getRecords() as $record) {
@@ -180,7 +179,7 @@ class ProcessCNPJ extends Command
      */
     private function getFileType(string $type, string $default): string
     {
-        return env('FILE_TYPE_' . $type, ".{$default}CSV");
+        return env('FILE_TYPE_' . $type, ".{$default}");
     }
 
     /**
@@ -191,15 +190,16 @@ class ProcessCNPJ extends Command
     private function getModelForFile(string $filename): ?Model
     {
         return match (true) {
-            str_contains($filename, $this->getFileType('CITY', 'MUNIC')) => app(City::class),
-            str_contains($filename, $this->getFileType('COUNTRY', 'PAIS')) => app(Country::class),
-            str_contains($filename, $this->getFileType('CNAE', 'CNAE')) => app(Cnae::class),
-            str_contains($filename, $this->getFileType('COMPANY', 'EMPRE')) => app(Company::class),
-            str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJU')) => app(LegalNature::class),
-            str_contains($filename, $this->getFileType('PARTNER', 'SOCIO')) => app(Partner::class),
+            str_contains($filename, $this->getFileType('CITY', 'MUNICCSV')) => app(City::class),
+            str_contains($filename, $this->getFileType('COUNTRY', 'PAISCSV')) => app(Country::class),
+            str_contains($filename, $this->getFileType('CNAE', 'CNAECSV')) => app(Cnae::class),
+            str_contains($filename, $this->getFileType('COMPANY', 'EMPRECSV')) => app(Company::class),
+            str_contains($filename, $this->getFileType('ESTABLISHMENT', 'ESTABELE')) => app(Company::class),
+            str_contains($filename, $this->getFileType('LEGAL_NATURE', 'NATJUCSV')) => app(LegalNature::class),
+            str_contains($filename, $this->getFileType('PARTNER', 'SOCIOCSV')) => app(Partner::class),
             str_contains(
                 $filename,
-                $this->getFileType('PARTNER_QUALIFICATION', 'QUALS')
+                $this->getFileType('PARTNER_QUALIFICATION', 'QUALSCSV')
             ) => app(PartnerQualification::class),
             default => null
         };
@@ -228,13 +228,13 @@ class ProcessCNPJ extends Command
     private function normalizeData(array $record): array
     {
         return array_map(function($field) {
-            // Remove possíveis barras invertidas antes de aspas
+            // Remove backslashes
             $field = str_replace('\\', '', $field);
 
-            // Converte a codificação de caracteres para UTF-8
+            // Convert ISO-8859-1 to UTF-8
             $field = mb_convert_encoding($field, 'UTF-8', 'ISO-8859-1');
 
-            // Substitui vírgula por ponto em valores numéricos
+            // Replace commas with dots in numeric fields
             if (is_numeric(str_replace(',', '.', $field))) {
                 $field = str_replace(',', '.', $field);
             }
