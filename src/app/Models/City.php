@@ -2,7 +2,7 @@
 /**
  * @author    Jefferson Costa
  * @copyright 2023, Hamburg
- * @package   cnpj-dados-publicos-receita-federal
+ * @package   cnpj-extractor
  *
  * Created using PhpStorm at 07.12.23 23:37
  */

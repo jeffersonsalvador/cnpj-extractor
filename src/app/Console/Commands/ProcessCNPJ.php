@@ -18,6 +18,7 @@ use App\Models\Establishment;
 use App\Models\LegalNature;
 use App\Models\Partner;
 use App\Models\PartnerQualification;
+use App\Models\Simple;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -201,6 +202,7 @@ class ProcessCNPJ extends Command
                 $filename,
                 $this->getFileType('PARTNER_QUALIFICATION', 'QUALSCSV')
             ) => app(PartnerQualification::class),
+            str_contains($filename, $this->getFileType('SIMPLE', 'SIMPLES')) => app(Simple::class),
             default => null
         };
     }
@@ -228,6 +230,10 @@ class ProcessCNPJ extends Command
     private function normalizeData(array $record): array
     {
         return array_map(function($field) {
+            if ($field === '') {
+                return null;
+            }
+
             // Remove backslashes
             $field = str_replace('\\', '', $field);
 
