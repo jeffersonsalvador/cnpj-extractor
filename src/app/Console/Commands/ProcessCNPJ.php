@@ -133,7 +133,6 @@ class ProcessCNPJ extends Command
         $batchData = [];
         $batchSize = env('BATCH_SIZE', 1000);
         $modelFields = $model->getFillable();
-        dd($modelFields);
         $redisKey = 'processed_' . $model->getTable();
 
         foreach ($csv->getRecords() as $record) {
