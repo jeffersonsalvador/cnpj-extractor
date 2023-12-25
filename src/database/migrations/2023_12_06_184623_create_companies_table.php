@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('legal_nature', 4);
             $table->string('responsible_qualification', 2);
             $table->decimal('capital_social', 15);
-            $table->string('company_size', 2);
+            $table->string('company_size', 2)->nullable();
             $table->string('federative_entity_responsible')->nullable();
             $table->timestamps();
         });

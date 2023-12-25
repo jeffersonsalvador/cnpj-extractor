@@ -230,7 +230,7 @@ class ProcessCNPJ extends Command
     private function normalizeData(array $record): array
     {
         return array_map(function($field) {
-            if ($field === '') {
+            if ($field === '' || $field === '00000000') {
                 return null;
             }
 
