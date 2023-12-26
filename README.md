@@ -1,8 +1,6 @@
 🇺🇸 English version [here](README.en.md)
 
----
 # CNPJ - Dados públicos da Receita Federal
----
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -10,7 +8,8 @@
 
 Este repositório contém uma aplicação para processamento de dados do CNPJ. É construído usando o framework Laravel para PHP e utiliza Docker para facilitar a configuração e a implantação. A aplicação lida com arquivos CSV de grande porte, processa-os e armazena os dados em um banco de dados MySQL ou PostgreSQL para análises posteriores.
 
-O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - última atualização em 15/12/2023.
+O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - 
+última atualização em 15/12/2023.
 
 ## Funcionalidades
 - Processamento de arquivos CSV de grande porte com dados CNPJ.
@@ -22,7 +21,7 @@ O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https:
 ## Estrutura do projeto
 
 ```
-/cnoj-dados-publicos-receita-federal
+/cnoj-extractor
 │
 ├── /docker
 │   ├── docker-compose.yml
@@ -70,7 +69,6 @@ Isso irá construir e executar os seguintes serviços:
 - `redis`: O servidor Redis.
 
 ## Uso
-
 Uma vez que os contêineres estejam em execução, você pode:
 
 - <strike>Acessar a aplicação via http://localhost:8080.</strike>
@@ -87,9 +85,10 @@ Para processar dados CNPJ:
 Na pasta /docker, execute o comando:
 
 - `make cnpj-app`
-- `php artisan cnpj-process`
+- `php artisan process:cnpj`
 
-Os arquivos zip serão processados e armazenados no redis. Para processar a fila no redis execute o comando:
+Os arquivos zip serão processados e armazenados no redis. 
+Para processar a fila no redis execute o comando:
 
 - `php artisan queue:work`
 
