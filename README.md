@@ -1,23 +1,20 @@
 🇺🇸 English version [here](README.en.md)
 
 ---
-# Projecto em desenvolvimento, lançamento em janeiro de 2024
-
-[//]: # (# CNPJ - Dados públicos da Receita Federal - em desenvolvimento)
-
+# CNPJ - Dados públicos da Receita Federal
 ---
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Descrição
 
-Este repositório contém uma aplicação web projetada para processamento de dados do CNPJ (o equivalente no Brasil a um número de identificação fiscal de empresas). É construído usando o framework Laravel para PHP e utiliza Docker para facilitar a configuração e a implantação. A aplicação lida com arquivos CSV de grande porte, processa-os e armazena os dados em um banco de dados PostgreSQL para análises posteriores.
+Este repositório contém uma aplicação para processamento de dados do CNPJ. É construído usando o framework Laravel para PHP e utiliza Docker para facilitar a configuração e a implantação. A aplicação lida com arquivos CSV de grande porte, processa-os e armazena os dados em um banco de dados MySQL ou PostgreSQL para análises posteriores.
 
-O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - última atualização em 24/11/2023.
+O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - última atualização em 15/12/2023.
 
 ## Funcionalidades
 - Processamento de arquivos CSV de grande porte com dados CNPJ.
-- Armazenamento de dados processados em banco de dados PostgreSQL.
+- Armazenamento de dados processados em banco de dados MySQL ou PostgreSQL.
 - Integração com Redis para otimização de desempenho.
 - Nginx como proxy reverso para o servidor web.
 - Configuração conteinerizada com Docker e Docker Compose.
@@ -49,15 +46,15 @@ O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https:
 Antes de começar, certifique-se de que os seguintes requisitos foram atendidos:
 
 - Docker e Docker Compose instalados em sua máquina.
-- Conhecimento básico de Laravel, Docker e PostgreSQL.
+- Conhecimento básico de Laravel, Docker e MySQL/PostgreSQL.
   
 ## Instalação
 Para configurar o projeto para desenvolvimento, siga estes passos:
 
 1. Clone o repositório.
 ```
-git clone https://github.com/jeffersonsalvador/cnpj-dados-publicos-receita-federal.git
-cd cnpj-dados-publicos-receita-federal
+git clone https://github.com/jeffersonsalvador/cnpj-extractor.git
+cd cnpj-extractor
 ```
 
 2. Navegue até o diretório docker e inicie os serviços:
@@ -69,7 +66,6 @@ make up
 Isso irá construir e executar os seguintes serviços:
 
 - `app`: A aplicação Laravel.
-- `nginx`: O servidor web da aplicação.
 - `postgres`: O banco de dados PostgreSQL.
 - `redis`: O servidor Redis.
 
@@ -77,34 +73,42 @@ Isso irá construir e executar os seguintes serviços:
 
 Uma vez que os contêineres estejam em execução, você pode:
 
-- Acessar a aplicação via http://localhost:8080.
+- <strike>Acessar a aplicação via http://localhost:8080.</strike>
 - Conectar ao banco de dados usando as credenciais fornecidas no arquivo .env.
 - Monitorar a instância do Redis na porta 6379.
 
 Para processar dados CNPJ:
 
 1. Coloque seus arquivos CSV no diretório designado (conforme mencionado na documentação da aplicação).
-2. Use a interface web da aplicação (em desenvolvimento) ou comandos CLI para iniciar o processamento.
+2. Use <strike>a interface web da aplicação (em desenvolvimento) ou</strike> comandos CLI para iniciar o processamento.
+
+### Processar arquivos zipados
+
+Na pasta /docker, execute o comando:
+
+- `make cnpj-app`
+- `php artisan cnpj-process`
+
+Os arquivos zip serão processados e armazenados no redis. Para processar a fila no redis execute o comando:
+
+- `php artisan queue:work`
 
 ## Docker
 
 Para construir e executar a aplicação, você usará os comandos do Makefile:
 
-`make up` para iniciar os containers e a aplicação web (em desenvolvimento).
-
-ou
-
 `make up-terminal` para iniciar os serviços necessários para rodar o script de importação de dados via terminal.
 
-Outros comando úteis:
+<strike>`make up` para iniciar os containers e a aplicação web (em desenvolvimento).</strike>
 
+Outros comando úteis:
 
 - `make down` para parar e remover os containers.
 - `make restart` para reiniciar os containers.
 
 ## Database
 
-Na pasta da aplicação `/src`, execute o comando `php artisan migrate` para criar as tabelas no banco de dados.
+Na pasta de configuração `/docker`, execute os comandos `make cnpj-app` para entrar em modo bash e `php artisan migrate` para criar as tabelas no banco de dados.
 
 ## Redis
 
@@ -124,14 +128,28 @@ Após o processamento:
 
 - Os dados são lidos do Redis.
 
-- Eles são desserializados e inseridos em lote no banco de dados PostgreSQL.
+- Eles são desserializados e inseridos em lote no banco de dados configurado no arquivo .env.
 
 Este método assegura eficiência no processamento de dados e minimiza a carga sobre o banco de dados durante a inserção de grandes volumes de registros.
+
+## Resultados após processamento
+
+| Tabela         |  Registros |  Tamanho |
+|----------------|-----------:|---------:|
+| cities         |      5.571 | 266.8 Kb |
+| cnaes          |      1.359 | 127.6 Kb |
+| companies      |  9.294.000 | 823.6 Mb |
+| countries      |        255 |  15.9 Kb |
+| establishments | 11.271.870 |   1.9 Gb |
+| legal_natures  |         90 |  13.2 Kb |
+| partners       |  6.191.123 | 632.4 Mb |
+| partners_qualifications |         68 |  11.1 Kb |
+| simples |  4.820.000 | 218.1 Mb |
 
 ## Licença
 Distribuído sob a Licença MIT. Veja LICENSE para mais informações.
 
 ## Contato
-Seu Nome – contato@jeffersoncosta.dev
+Jefferson Costa – contato@jeffersoncosta.dev
 
-Link do Projeto: https://github.com/jeffersonsalvador/cnpj-dados-publicos-receita-federal
+Link do Projeto: https://github.com/jeffersonsalvador/cnpj-extractor
