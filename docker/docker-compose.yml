@@ -2,31 +2,18 @@ version: '3'
 
 services:
 
-  # Web Server Service
-  #nginx:
-  #  image: nginx:alpine
-  #  container_name: nginx
-  #  ports:
-  #    - "8080:80"
-  #  volumes:
-  #    - ../src:/var/www
-  #    - ./nginx/conf.d/:/etc/nginx/conf.d/
-  #  depends_on:
-  #    - app
-  #    - db
-
   #Database Service
-  #db:
-  #  image: postgres:16
-  #  container_name: postgres
-  #  volumes:
-  #    - ./postgresql/data:/var/lib/postgresql/data
-  #  ports:
-  #    - "5432:5432"
-  #  environment:
-  #    POSTGRES_DB: cnpj
-  #    POSTGRES_USER: postgres
-  #    POSTGRES_PASSWORD: postgres
+  db:
+    image: postgres:16
+    container_name: postgres
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cnpj
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
     # Redis Service
   redis:
