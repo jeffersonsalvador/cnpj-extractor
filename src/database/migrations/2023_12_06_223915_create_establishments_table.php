@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('neighborhood')->nullable();
             $table->string('zip_code', 8)->nullable();
             $table->string('state', 2);
-            $table->string('city')->nullable();
+            $table->string('city_code')->nullable();
             $table->string('phone_area_code_1', 2)->nullable();
             $table->string('phone_number_1')->nullable();
             $table->string('phone_area_code_2', 2)->nullable();

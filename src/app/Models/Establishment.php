@@ -43,7 +43,7 @@ class Establishment extends Model
         'neighborhood',
         'zip_code',
         'state',
-        'city',
+        'city_code',
         'phone_area_code_1',
         'phone_number_1',
         'phone_area_code_2',
