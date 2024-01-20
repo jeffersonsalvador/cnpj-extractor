@@ -54,4 +54,10 @@ class Establishment extends Model
         'special_situation',
         'special_situation_date',
     ];
+
+    protected $dates = [
+        'registration_status_date',
+        'activity_start_date',
+        'special_situation_date'
+    ];
 }

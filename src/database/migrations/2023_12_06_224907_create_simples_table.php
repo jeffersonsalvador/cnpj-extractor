@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('simples', function (Blueprint $table) {
-            $table->string('basic_cnpj', 8);
+            $table->string('basic_cnpj', 8)->unique()->primary()->index();
             $table->enum('simple_option', ['S', 'N', '']);
-            $table->string('simple_option_date')->nullable();
-            $table->string('simple_exclusion_date')->nullable();
+            $table->date('simple_option_date')->nullable();
+            $table->date('simple_exclusion_date')->nullable();
             $table->enum('mei_option', ['S', 'N', '']);
-            $table->string('mei_option_date')->nullable();
-            $table->string('mei_exclusion_date')->nullable();
+            $table->date('mei_option_date')->nullable();
+            $table->date('mei_exclusion_date')->nullable();
             $table->timestamps();
         });
     }

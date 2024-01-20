@@ -21,7 +21,7 @@ class Simple extends Model
     protected $primaryKey = 'basic_cnpj';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que podem ser preenchidos em massa.
      *
      * @var string[]
      */
@@ -34,4 +34,21 @@ class Simple extends Model
         'mei_option_date',
         'mei_exclusion_date',
     ];
+
+    protected $dates = [
+        'simple_option_date',
+        'simple_exclusion_date',
+        'mei_option_date',
+        'mei_exclusion_date',
+    ];
+
+    /**
+     * Retorna os campos de data do modelo.
+     *
+     * @return array
+     */
+    public function getDateFields(): array
+    {
+        return $this->dates;
+    }
 }

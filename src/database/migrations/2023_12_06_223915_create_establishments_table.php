@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('establishments', function (Blueprint $table) {
-            $table->string('basic_cnpj', 8);
+            $table->string('basic_cnpj', 8)->index();
             $table->string('cnpj_order', 4);
             $table->string('cnpj_dv', 2);
             $table->char('main_branch_office', 1);
@@ -43,6 +43,8 @@ return new class extends Migration
             $table->string('special_situation')->nullable();
             $table->date('special_situation_date')->nullable();
             $table->timestamps();
+
+            $table->primary(['basic_cnpj', 'cnpj_order', 'cnpj_dv']);
         });
     }
 

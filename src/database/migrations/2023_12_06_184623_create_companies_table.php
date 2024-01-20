@@ -15,7 +15,7 @@ return new class extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
 
-            $table->string('basic_cnpj', 8)->unique()->primary();
+            $table->string('basic_cnpj', 8)->unique()->primary()->index();
             $table->string('corporate_name');
             $table->string('legal_nature', 4);
             $table->string('responsible_qualification', 2);

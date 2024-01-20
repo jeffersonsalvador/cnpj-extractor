@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cnae extends Model
 {
     protected $primaryKey = 'code';
+
     protected $fillable = [
         'code',
         'name'
