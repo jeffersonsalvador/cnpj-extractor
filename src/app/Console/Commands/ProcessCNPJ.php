@@ -9,7 +9,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\ProcessCsvRecords;
 use App\Models\City;
 use App\Models\Cnae;
 use App\Models\Company;
@@ -19,13 +18,13 @@ use App\Models\LegalNature;
 use App\Models\Partner;
 use App\Models\PartnerQualification;
 use App\Models\Simple;
+use App\Services\CSVProcessingService;
+use App\Services\ZipProcessingService;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 use League\Csv\Exception;
 use League\Csv\InvalidArgument;
-use League\Csv\Reader;
 use League\Csv\UnavailableStream;
 use Symfony\Component\Console\Helper\ProgressBar;
 use ZipArchive;
@@ -47,25 +46,47 @@ class ProcessCNPJ extends Command
     protected $description = 'Processa arquivos CNPJ em ZIP e insere no banco de dados.';
 
     /**
-     * Execute the console command.
+     * Class constructor.
+     *
+     * @param  ZipProcessingService  $zipService
+     * @param  CSVProcessingService  $csvService
      */
+    public function __construct(
+        readonly ZipProcessingService $zipService,
+        readonly CSVProcessingService $csvService,
+    ) {
+        parent::__construct();
+    }
+
     /**
+     * Execute the console command.
+     *
+     * @return void
+     * @throws Exception
+     * @throws InvalidArgument
+     * @throws UnavailableStream
      */
     public function handle(): void
     {
-        $zipFilesDirectory = base_path(env('ZIP_FILES_DIRECTORY'));
-        $zipFiles = glob($zipFilesDirectory . '/*.zip');
-
+        // Run individual test file
+        $this->runTestFile(env('RUN_TEST_FILE', false));
+        $zipFiles = $this->getZipFiles();
         $progressBar = new ProgressBar($this->output, count($zipFiles));
 
-        try {
-            foreach ($zipFiles as $zipFile) {
-                $this->processZipFile($zipFile);
+        foreach ($zipFiles as $zipFile) {
+            try {
+                $tempDir = $this->zipService->extract($zipFile);
                 $progressBar->advance();
+
+                $filename = $this->getFirstFileNameFromZip($zipFile);
+                $model = $this->getModelForFile($filename);
+                $this->info("\nProcessing file: $filename");
+                $this->csvService->process($tempDir.'/'.$filename, $model, $this->output);
+
+                $this->cleanUp($tempDir);
+            } catch (Exception $e) {
+                Log::error('Erro no processamento: ' . $e->getMessage());
             }
-        } catch (Exception $e) {
-            $this->error('Erro no processamento: ' . $e->getMessage());
-            Log::error($e);
         }
 
         $progressBar->finish();
@@ -73,103 +94,31 @@ class ProcessCNPJ extends Command
     }
 
     /**
-     * Process a ZIP file
-     * @param string $zipFilePath
-     * @return void
+     * @return array|false
      */
-    private function processZipFile(string $zipFilePath): void
+    private function getZipFiles()
+    {
+        $zipFilesDirectory = base_path(env('ZIP_FILES_DIRECTORY'));
+
+        return glob($zipFilesDirectory . '/*.zip');
+    }
+
+    /**
+     * Get the first file name from a ZIP file
+     * @param string $zipFilePath
+     * @return string
+     * @throws Exception
+     */
+    private function getFirstFileNameFromZip($zipFilePath): string
     {
         $zip = new ZipArchive();
-
         if ($zip->open($zipFilePath) === true) {
-            $tempDir = sys_get_temp_dir();
-            $zip->extractTo($tempDir);
             $filename = $zip->getNameIndex(0);
-            $model = $this->getModelForFile($filename);
-            if ($model === null) {
-                $this->error("\nTipo de arquivo não suportado: $filename");
-                return;
-            }
-
-            try {
-                $this->processCSV($tempDir . '/' . $filename, $model);
-            } catch (InvalidArgument $e) {
-                $this->error("Erro de argumento inválido: " . $e->getMessage());
-                Log::error("Erro de argumento inválido no processamento do CSV: " . $e->getMessage());
-            } catch (UnavailableStream $e) {
-                $this->error("Erro de stream indisponível: " . $e->getMessage());
-                Log::error("Erro de stream indisponível no processamento do CSV: " . $e->getMessage());
-            } catch (Exception $e) {
-                $this->error("Erro de exceção geral: " . $e->getMessage());
-                Log::error("Erro de exceção geral no processamento do CSV: " . $e->getMessage());
-
-            }
-
             $zip->close();
-            $this->cleanUp($tempDir);
+            return $filename;
         } else {
-            $this->error("Não foi possível abrir o arquivo: $zipFilePath");
+            throw new Exception("Não foi possível abrir o arquivo ZIP: $zipFilePath");
         }
-    }
-
-    /**
-     * Process a CSV file
-     * @param string $filePath
-     * @param Model $model
-     * @return void
-     * @throws Exception
-     * @throws InvalidArgument
-     * @throws UnavailableStream
-     */
-    private function processCSV(string $filePath, Model $model): void
-    {
-        $this->info("\nProcessing CSV file: " . basename($filePath));
-
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setDelimiter(';');
-        $csv->setEnclosure('"');
-        $csv->setEscape('');
-        $totalRecords = $csv->count();
-
-        $progressBar = new ProgressBar($this->output, $totalRecords);
-        $batchData = [];
-        $batchSize = env('BATCH_SIZE', 1000);
-        $modelFields = $model->getFillable();
-        $redisKey = 'processed_' . $model->getTable();
-
-        foreach ($csv->getRecords() as $record) {
-            $progressBar->advance();
-            $record = $this->normalizeData($record);
-            $data = array_combine($modelFields, $record);
-            $batchData[] = $data;
-
-            if (count($batchData) >= $batchSize) {
-                $this->storeAndDispatchJob($redisKey, $batchData, $model);
-                $batchData = []; // Reset the batch
-            }
-        }
-
-        $progressBar->finish();
-
-        // Insert the last batch if there are any remaining records
-        if (!empty($batchData)) {
-            $this->storeAndDispatchJob($redisKey, $batchData, $model);
-        }
-    }
-
-    /**
-     * Store the batch data and dispatch a job
-     *
-     * @param string $redisKey
-     * @param array $batchData
-     * @param Model $model
-     * @return void
-     */
-    private function storeAndDispatchJob(string $redisKey, array $batchData, Model $model): void
-    {
-        $uid = uniqid();
-        Redis::lpush("$redisKey-$uid", json_encode($batchData));
-        ProcessCsvRecords::dispatch("$redisKey-$uid", get_class($model));
     }
 
     /**
@@ -223,29 +172,16 @@ class ProcessCNPJ extends Command
     }
 
     /**
-     * Normalize data
-     * @param array $record
-     * @return array
+     * @throws UnavailableStream
+     * @throws InvalidArgument
+     * @throws Exception
      */
-    private function normalizeData(array $record): array
+    private function runTestFile(bool $run = false): void
     {
-        return array_map(function($field) {
-            if ($field === '' || $field === '00000000') {
-                return null;
-            }
-
-            // Remove backslashes
-            $field = str_replace('\\', '', $field);
-
-            // Convert ISO-8859-1 to UTF-8
-            $field = mb_convert_encoding($field, 'UTF-8', 'ISO-8859-1');
-
-            // Replace commas with dots in numeric fields
-            if (is_numeric(str_replace(',', '.', $field))) {
-                $field = str_replace(',', '.', $field);
-            }
-
-            return $field;
-        }, $record);
+        if ($run) {
+            $filesDirectory = base_path(env('ZIP_FILES_DIRECTORY'));
+            $testFile = glob($filesDirectory . '/test.txt');
+            $this->processCSV($testFile[0], app(Simple::class));
+        }
     }
 }
