@@ -9,7 +9,7 @@
 Este repositório contém uma aplicação para processamento de dados do CNPJ. É construído usando o framework Laravel para PHP e utiliza Docker para facilitar a configuração e a implantação. A aplicação lida com arquivos CSV de grande porte, processa-os e armazena os dados em um banco de dados MySQL ou PostgreSQL para análises posteriores.
 
 O download dos arquivos de dados da Receita Federal pode ser feito [aqui](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj) - 
-última atualização em 15/12/2023.
+última atualização em 19/01/2024.
 
 ## Funcionalidades
 - Processamento de arquivos CSV de grande porte com dados CNPJ.
@@ -135,15 +135,15 @@ Este método assegura eficiência no processamento de dados e minimiza a carga s
 
 | Tabela         |  Registros |  Tamanho |
 |----------------|-----------:|---------:|
-| cities         |      5.571 | 266.8 Kb |
-| cnaes          |      1.359 | 127.6 Kb |
-| companies      |  9.294.000 | 823.6 Mb |
+| cities         |      5.571 | 266.7 Kb |
+| cnaes          |      1.359 | 135.6 Kb |
+| companies      | 22.036.299 |   2.0 Gb |
 | countries      |        255 |  15.9 Kb |
-| establishments | 11.271.870 |   1.9 Gb |
+| establishments | 12.289.370 |   2.4 Gb |
 | legal_natures  |         90 |  13.2 Kb |
-| partners       |  6.191.123 | 632.4 Mb |
+| partners       |  7.526.181 | 774.3 Mb |
 | partners_qualifications |         68 |  11.1 Kb |
-| simples |  4.820.000 | 218.1 Mb |
+| simples | 18.863.731 | 837.0 Mb |
 
 ## Licença
 Distribuído sob a Licença MIT. Veja LICENSE para mais informações.

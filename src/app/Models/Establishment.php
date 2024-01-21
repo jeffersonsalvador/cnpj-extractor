@@ -60,4 +60,14 @@ class Establishment extends Model
         'activity_start_date',
         'special_situation_date'
     ];
+
+    /**
+     * Retorna os campos de data do modelo.
+     *
+     * @return array
+     */
+    public function getDateFields(): array
+    {
+        return $this->dates;
+    }
 }

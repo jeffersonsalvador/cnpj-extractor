@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Jobs\ProcessCsvRecords;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 use League\Csv\Exception;
 use League\Csv\InvalidArgument;
 use League\Csv\Reader;
@@ -121,13 +122,16 @@ class CSVProcessingService
             return null;
         }
 
-        $field = str_replace(array("'", '"', "\\"), '', $value);
+        $exclude = [':', '_', '-', ' ', ',', '+', '.', '?', '!', '´'];
+        $field = str_replace(array("'", '"', "\\"), '', trim($value));
+        $field = Str::startsWith($field, collect($exclude)) ? substr($field, 1) : $field;
+        $field = Str::startsWith($field, collect($exclude)) ? substr($field, 1) : $field;
         $field = mb_convert_encoding($field, 'UTF-8', 'ISO-8859-1');
 
         if (is_numeric(str_replace(',', '.', $field))) {
             $field = str_replace(',', '.', $field);
         }
 
-        return $field;
+        return trim($field);
     }
 }

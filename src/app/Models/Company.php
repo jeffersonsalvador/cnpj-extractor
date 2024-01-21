@@ -11,9 +11,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Company
+ * @package App\Models
+ */
 class Company extends Model
 {
     protected $primaryKey = 'basic_cnpj';
+
     protected $fillable = [
         'basic_cnpj',
         'corporate_name',
